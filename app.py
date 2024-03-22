@@ -45,13 +45,13 @@ with ui.layout_columns(col_widths=(4, 8)):
 
     @render.data_frame
     def render_penguins_table():
-        return penguins_df
+        return filtered_data()
 
 with ui.layout_columns(col_widths=(4, 8)):           
     with ui.card(full_screen=True): "Penguins Grid"
     @render.data_frame
     def penguins_data():
-        return render.DataGrid(penguins_df, row_selection_mode="multiple")  
+        return render.DataGrid(filtered_data(), row_selection_mode="multiple")  
 
 with ui.layout_columns(col_widths=(4, 8)):
     with ui.card(full_screen=True): "Plotly Penguins Histogram"
@@ -63,7 +63,7 @@ with ui.layout_columns(col_widths=(4, 8)):
     with ui.card(full_screen=True): "Seaborn Penguins Histogram"
     @render.plot(alt="Seaborn Histogram", full_page="true")
     def seaborn_histogram():
-        histplot = sns.histplot(data=penguins_df, x="bill_depth_mm", bins=input.seaborn_bin_count())
+        histplot = sns.histplot(data=filtered_data(), x="bill_depth_mm", bins=input.seaborn_bin_count())
         histplot.set_title("Palmer Penguins")
         histplot.set_xlabel("Bill Depth")
         histplot.set_ylabel("Count")
@@ -74,7 +74,7 @@ with ui.layout_columns(col_widths=(4, 8)):
 
     @render_plotly
     def plotly_scatterplot():
-        return px.scatter(penguins_df,
+        return px.scatter(filtered_data(),
             x="bill_length_mm",
             y="body_mass_g",
             color="species",
