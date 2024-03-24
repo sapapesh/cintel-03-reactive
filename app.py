@@ -31,7 +31,12 @@ with ui.sidebar(open="open"):
         "body_mass_g": "Body Mass",  
         },  
     )  
-        
+
+        ui.input_checkbox_group(  
+        "selected_species_list",  
+        "Select Species",  
+        ["Adelie", "Gentoo", "Chinstrap"],
+    )  
         ui.hr()
         ui.a(
         "GitHub",
@@ -40,12 +45,12 @@ with ui.sidebar(open="open"):
          )
 
 with ui.layout_columns(col_widths=(4, 8)):
-    with ui.card():
+    with ui.card(full_screen=True):
         "Penguins Table"
 
     @render.data_frame
-    def render_penguins_table():
-        return filtered_data()
+    def penguins_datatable():
+        return render.DataTable(filtered_data())
 
 with ui.layout_columns(col_widths=(4, 8)):           
     with ui.card(full_screen=True): "Penguins Grid"
@@ -97,7 +102,7 @@ with ui.layout_columns(col_widths=(4, 8)):
 
 @reactive.calc
 def filtered_data():
-    return penguins_df
+    return penguins_df[penguins_df["species"].isin(input.selected_species_list())]
 
 
 # Additional Python Notes
